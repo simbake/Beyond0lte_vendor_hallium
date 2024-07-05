@@ -1,0 +1,28 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install binutils openssh-client android-tools-mkbootimg bc bison build-essential ca-certificates cpio curl flex git kmod libssl-dev libtinfo5 python2 sudo unzip wget xz-utils bc bison build-essential ca-certificates cpio curl fakeroot flex git kmod libssl-dev libtinfo5 lz4 python2 python3 sudo unzip wget xz-utils -y --no-install-recommends
+
+      - name: Run build.sh
+        run: bash build.sh
+
+      - name: Copy vendor.img artifact
+        run: |
+          mkdir -p artifacts
+          cp out/target/product/beyond0lte/vendor.img artifacts/
+        # You can adjust the destination directory as needed
